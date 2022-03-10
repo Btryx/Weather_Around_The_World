@@ -34,7 +34,7 @@ let weather = {
     "apiKey": "db08a99b37dc6918d2151f9adaf8a6e2",
     fetchWeather: function(cityName) {
         city = cityName;
-        fetch("http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=" + unit + "&appid=" + this.apiKey)
+        fetch("https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=" + unit + "&appid=" + this.apiKey)
         .then((response) => {
             if (!response.ok) {
               alert("No city found at that name");
