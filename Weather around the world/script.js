@@ -85,36 +85,45 @@ const timeInt = setInterval(() => {
     let month = date.getMonth() + 1;
     let day = date.getDate();
     let utc_hour = date.getUTCHours();
+    console.log(utc_hour)
     let utc_minutes = date.getUTCMinutes();
     let utc_seconds = date.getUTCSeconds();
-    let all_seconds = utc_hour * 3600 + utc_minutes * 60 + utc_seconds;
-    all_seconds = Math.abs(all_seconds + tz);
-    let hour = Math.floor(all_seconds / 3600);
-    let m_mp = all_seconds % 3600;
-    let minutes = Math.floor(m_mp / 60);
-    let seconds = m_mp % 60;
-    if(hour >= 12){
-        hour -= 12;
-    }
-    if(hour >= 12){
-        hour -= 12;
-        AM_PM = "PM";
-    }
-    console.log(hour, minutes, seconds)
-    document.querySelector(".date").innerHTML = year + "/" + month + "/" + day;
-        if(minutes < 10 && seconds < 10 ){
-            document.querySelector(".clock").innerHTML = hour + ":0" + minutes + ":0" + seconds + " " + AM_PM;
-        }
-        else if(seconds < 10){
-            document.querySelector(".clock").innerHTML = hour + ":" + minutes + ":0" + seconds + " " + AM_PM;
-        }
-        else if(minutes < 10){
-            document.querySelector(".clock").innerHTML = hour + ":0" + minutes + ":" + seconds + " " + AM_PM;
+    let hour = 0;
+
+    let diff_in_hours = tz/3600;
+    if(tz % 3600 == 0){
+        //if difference is positive
+        if( tz > 0){
+            hour = utc_hour + (diff_in_hours);
+            if(hour > 12){
+                hour -= 12;
+                AM_PM = "PM";
+            }
+        //if diff is negative
         }else{
-            document.querySelector(".clock").innerHTML = hour + ":" + minutes + ":" + seconds + " " + AM_PM;    
+            hour = utc_hour + (diff_in_hours);
+            if(hour < 0){
+                hour += 12;
+                AM_PM = "PM";
+            }
         }
-}, 0);
-        
+        document.querySelector(".date").innerHTML = year + "/" + month + "/" + day;
+        if(utc_minutes < 10 && utc_seconds < 10 ){
+            document.querySelector(".clock").innerHTML = hour + ":0" + utc_minutes + ":0" + utc_seconds + " " + AM_PM;
+        }
+        else if(utc_seconds < 10){
+            document.querySelector(".clock").innerHTML = hour + ":" + utc_minutes + ":0" + utc_seconds + " " + AM_PM;
+        }
+        else if(utc_minutes < 10){
+            document.querySelector(".clock").innerHTML = hour + ":0" + utc_minutes + ":" + utc_seconds + " " + AM_PM;
+        }else{
+            document.querySelector(".clock").innerHTML = hour + ":" + utc_minutes + ":" + utc_seconds + " " + AM_PM;    
+        }
+    }else{
+        document.querySelector(".clock").innerHTML = "";
+    }
+    }
+    , 0);
 
 setInterval(timeInt, 1000);
 
