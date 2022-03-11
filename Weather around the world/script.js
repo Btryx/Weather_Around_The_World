@@ -96,10 +96,10 @@ const timeInt = setInterval(() => {
     let seconds = m_mp % 60;
     if(hour >= 12){
         hour -= 12;
-        AM_PM = "PM";
     }
     if(hour >= 12){
         hour -= 12;
+        AM_PM = "PM";
     }
     console.log(hour, minutes, seconds)
     document.querySelector(".date").innerHTML = year + "/" + month + "/" + day;
