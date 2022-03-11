@@ -39,6 +39,7 @@ body {
     margin: 1em;
     font-family: var(--ff-primary);
 }
+
 .searchBox {
     transform:  translate(-50%,50%);
     background: #2f3640c1;
@@ -87,16 +88,6 @@ input:not(:placeholder-shown) {
 
 }
 
-@media screen and (max-width: 620px) {
-    .searchBox:hover > .searchInput {
-        width: 150px;
-        padding: 0 6px;
-    }
-
-    .searchBox{
-        top: 5%;
-    }
-}
 
 .weather{
     display: flex;
@@ -118,11 +109,13 @@ input:not(:placeholder-shown) {
 .date{
     font-size: 600;
     align-self: flex-end;
+    margin-right: 7px;
 }
 
 .clock{
     font-size: x-large;
     align-self: flex-end;
+    margin-right: 7px;
 }
 
 .costumize{
@@ -137,6 +130,47 @@ input:not(:placeholder-shown) {
     margin: 0 auto;
 }
 
+@media(max-width: 1280px){
+    .searchBox{
+        top: 5%;
+    }
+}
+
+@media screen and (max-width: 620px) {
+    .searchBox:hover > .searchInput {
+        width: 150px;
+        padding: 0 6px;
+    }
+
+    .searchBox{
+        top: 3.5%;
+    }
+}
+
+@media(max-width: 450px){
+
+    .display{
+        background-color: transparent;
+        margin-top: 4em;
+    }
+
+    .weather-item{
+        margin: .6em;
+        font-size: smaller;
+        font-weight: bold;
+        text-shadow: var(--boxs);
+    }
+
+    .searchBox:hover > .searchInput {
+        width: 120px;
+        padding: 0 6px;
+    }
+
+    .searchBox{
+        top: 2%;
+    }
+
+}
 
 .loader-div {
 	position: fixed;

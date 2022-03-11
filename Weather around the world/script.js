@@ -37,8 +37,7 @@ let weather = {
         fetch("https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=" + unit + "&appid=" + this.apiKey)
         .then((response) => {
             if (!response.ok) {
-              alert("No city found at that name");
-              throw new Error("No city found at that name");
+              console.log("No city found at that name.")
             }
             return response.json();
           })
@@ -56,7 +55,7 @@ let weather = {
         if(isMetric){
             document.querySelector("#temp").innerText = temp.toFixed(1) + " °C";
             document.querySelector("#feels-like").innerText = "Feels like: " + feels_like.toFixed(1) + " °C";
-            document.querySelector("#wind-speed").innerText = "Wind speed: " + speed + " meter/sec";
+            document.querySelector("#wind-speed").innerText = "Wind speed: " + speed + " m/s";
             document.querySelector("#humidity").innerText = "Humidity: " + humidity + "%";
         }else{
             document.querySelector("#temp").innerText = temp.toFixed(1) + " °F";
@@ -85,12 +84,10 @@ const timeInt = setInterval(() => {
     let month = date.getMonth() + 1;
     let day = date.getDate();
     let utc_hour = date.getUTCHours();
-    console.log(utc_hour)
     let utc_minutes = date.getUTCMinutes();
     let utc_seconds = date.getUTCSeconds();
     let hour = 0;
-
-    let diff_in_hours = tz/3600;
+    let diff_in_hours = parseInt(tz/3600);
     if(tz % 3600 == 0){
         //if difference is positive
         if( tz > 0){
@@ -107,20 +104,46 @@ const timeInt = setInterval(() => {
                 AM_PM = "PM";
             }
         }
-        document.querySelector(".date").innerHTML = year + "/" + month + "/" + day;
-        if(utc_minutes < 10 && utc_seconds < 10 ){
-            document.querySelector(".clock").innerHTML = hour + ":0" + utc_minutes + ":0" + utc_seconds + " " + AM_PM;
-        }
-        else if(utc_seconds < 10){
-            document.querySelector(".clock").innerHTML = hour + ":" + utc_minutes + ":0" + utc_seconds + " " + AM_PM;
-        }
-        else if(utc_minutes < 10){
-            document.querySelector(".clock").innerHTML = hour + ":0" + utc_minutes + ":" + utc_seconds + " " + AM_PM;
-        }else{
-            document.querySelector(".clock").innerHTML = hour + ":" + utc_minutes + ":" + utc_seconds + " " + AM_PM;    
-        }
     }else{
-        document.querySelector(".clock").innerHTML = "";
+        if( tz > 0){
+            m_minute = (tz % 3600)/60;
+            hour = utc_hour + (diff_in_hours);
+            utc_minutes += m_minute;
+            if(utc_minutes >= 60){
+                utc_minutes -= 60;
+                hour += 1;
+            }
+            if(hour > 12){
+                hour -= 12;
+                AM_PM = "PM";
+            }
+        //if diff is negative
+        }else{
+            m_minute = (tz % 3600)/60;
+            hour = utc_hour + (diff_in_hours);
+            utc_minutes -= m_minute;
+            if(utc_minutes < 0){
+                utc_minutes += 60;
+                hour -= 1;
+            }
+            if(hour < 0){
+                hour += 12;
+                AM_PM = "PM";
+            }
+        }
+    }
+
+    document.querySelector(".date").innerHTML = year + "/" + month + "/" + day;
+    if(utc_minutes < 10 && utc_seconds < 10 ){
+        document.querySelector(".clock").innerHTML = hour + ":0" + utc_minutes + ":0" + utc_seconds + " " + AM_PM;
+    }
+    else if(utc_seconds < 10){
+        document.querySelector(".clock").innerHTML = hour + ":" + utc_minutes + ":0" + utc_seconds + " " + AM_PM;
+    }
+    else if(utc_minutes < 10){
+        document.querySelector(".clock").innerHTML = hour + ":0" + utc_minutes + ":" + utc_seconds + " " + AM_PM;
+    }else{
+        document.querySelector(".clock").innerHTML = hour + ":" + utc_minutes + ":" + utc_seconds + " " + AM_PM;    
     }
     }
     , 0);
@@ -134,8 +157,9 @@ document.querySelector(".searchButton").addEventListener("click", function () {
 });
 
 
-searchbar.addEventListener("keydown", function (event){
+searchbar.addEventListener("keyup", function (event){
     if (event.key == "Enter"){
+        console.log(event);
         weather.searching();
         searchbar.value = "";
     }
