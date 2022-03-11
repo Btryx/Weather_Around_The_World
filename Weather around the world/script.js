@@ -88,8 +88,7 @@ const timeInt = setInterval(() => {
     let utc_minutes = date.getUTCMinutes();
     let utc_seconds = date.getUTCSeconds();
     let all_seconds = utc_hour * 3600 + utc_minutes * 60 + utc_seconds;
-    //all_seconds = Math.abs(all_seconds + tz);
-    all_seconds = all_seconds + tz;
+    all_seconds = Math.abs(all_seconds + tz);
     let hour = Math.floor(all_seconds / 3600);
     let m_mp = all_seconds % 3600;
     let minutes = Math.floor(m_mp / 60);
