@@ -85,66 +85,96 @@ let weather = {
 let AM_PM = "AM"; //am = before midday
 const timeInt = setInterval(() => {
     let date = new Date();
-    let year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    let day = date.getDate();
     let utc_hour = date.getUTCHours();
     let utc_minutes = date.getUTCMinutes();
     let utc_seconds = date.getUTCSeconds();
     let hour = 0;
     let diff_in_hours = parseInt(tz/3600);
     if(tz % 3600 == 0){
-        //if difference is positive
-        if( tz >= 0){
-            hour = utc_hour + (diff_in_hours);
-            if( hour >= 12){
-                AM_PM = "PM";
+
+        hour = utc_hour + (diff_in_hours);
+        if(hour >= 24){
+            AM_PM = "AM";
+            hour -= 24;
+        }
+        else if(hour >= 12){
+            AM_PM = "PM";
+            hour -= 12;
+            if(hour == 0){
+                hour = 12;
             }
-            if(hour > 12){
-                hour -= 12;
-            }
-        //if diff is negative
+        else if(hour < 0){
+            hour = abs(hour);
+            AM_PM = "PM";
+        }
         }else{
             AM_PM = "AM";
-            hour = utc_hour + (diff_in_hours);
-            if(hour < 0){
-                hour += 12;
-                AM_PM = "PM";
-            }
+        }
+
+        if(hour == 12){
+            AM_PM = "PM";
         }
     }else{
+        hour = utc_hour + (diff_in_hours); 
         if( tz > 0){
             m_minute = (tz % 3600)/60;
-            hour = utc_hour + (diff_in_hours);
+            hour = utc_hour + (diff_in_hours); 
             utc_minutes += m_minute;
+
             if(utc_minutes >= 60){
                 utc_minutes -= 60;
                 hour += 1;
             }
-            if( hour >= 12){
+
+            if(hour >= 24){
+                AM_PM = "AM";
+                hour -= 24;
+            }
+            else if(hour >= 12){
+                AM_PM = "PM";
+                hour -= 12;
+                if(hour == 0){
+                    hour = 12;
+                }
+            }else{
+                AM_PM = "AM";
+            }
+
+            if(hour == 12){
                 AM_PM = "PM";
             }
-            if(hour > 12){
-                hour -= 12;
-            }
+
         //if diff is negative
         }else{
             AM_PM = "AM";
             m_minute = (tz % 3600)/60;
-            hour = utc_hour + (diff_in_hours);
             utc_minutes -= m_minute;
+
             if(utc_minutes < 0){
                 utc_minutes += 60;
                 hour -= 1;
             }
-            if(hour < 0){
-                hour += 12;
+
+            if(hour >= 12){
+                AM_PM = "PM";
+                hour -= 12;
+                if(hour == 0){
+                    hour = 12;
+                }
+            }else if(hour < 0){
+                hour = abs(hour);
+                AM_PM = "PM";
+            }
+            else{
+                AM_PM = "AM";
+            }
+
+            if(hour == 12){
                 AM_PM = "PM";
             }
         }
     }
 
-    document.querySelector(".date").innerHTML = year + "/" + month + "/" + day;
     if(utc_minutes < 10 && utc_seconds < 10 ){
         document.querySelector(".clock").innerHTML = hour + ":0" + utc_minutes + ":0" + utc_seconds + " " + AM_PM;
     }

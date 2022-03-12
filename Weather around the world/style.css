@@ -116,12 +116,6 @@ input:not(:placeholder-shown) {
     width: 55px;
 }
 
-.date{
-    font-size: 600;
-    align-self: flex-end;
-    margin-right: 7px;
-}
-
 .clock{
     font-size: x-large;
     align-self: flex-end;
