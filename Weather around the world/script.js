@@ -38,10 +38,15 @@ let weather = {
         .then((response) => {
             if (!response.ok) {
               console.log("No city found at that name.")
+              document.querySelector(".weather").style.visibility = "hidden";
+              document.querySelector(".error_msg").style.visibility = "visible";
+              throw new Error(response.status);
             }
+            document.querySelector(".error_msg").style.visibility = "hidden";
+            document.querySelector(".weather").style.visibility = "visible";
             return response.json();
           })
-          .then((data) => this.displayWeather(data));
+          .then((data) => this.displayWeather(data))
     },
     displayWeather: function(data) {
         const {name} = data;
@@ -90,7 +95,7 @@ const timeInt = setInterval(() => {
     let diff_in_hours = parseInt(tz/3600);
     if(tz % 3600 == 0){
         //if difference is positive
-        if( tz > 0){
+        if( tz >= 0){
             hour = utc_hour + (diff_in_hours);
             if( hour >= 12){
                 AM_PM = "PM";
@@ -151,23 +156,25 @@ const timeInt = setInterval(() => {
     }else{
         document.querySelector(".clock").innerHTML = hour + ":" + utc_minutes + ":" + utc_seconds + " " + AM_PM;    
     }
-    }
-    , 0);
+    }, 0
+);
 
 setInterval(timeInt, 1000);
 
-
 //searching
 document.querySelector(".searchButton").addEventListener("click", function () {
-    weather.searching();
+    if(searchbar.value){
+        weather.searching();
+    }
 });
-
 
 searchbar.addEventListener("keyup", function (event){
     if (event.key == "Enter"){
-        console.log(event);
-        weather.searching();
-        searchbar.value = "";
+        if (searchbar.value){
+            console.log(event);
+            weather.searching();
+            searchbar.value = "";
+        }
     }
 });
 
