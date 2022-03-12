@@ -77,7 +77,7 @@ let weather = {
 };
 
 //dealing with time
-let AM_PM = "AM";
+let AM_PM = "AM"; //am = before midday
 const timeInt = setInterval(() => {
     let date = new Date();
     let year = date.getFullYear();
@@ -92,12 +92,15 @@ const timeInt = setInterval(() => {
         //if difference is positive
         if( tz > 0){
             hour = utc_hour + (diff_in_hours);
+            if( hour >= 12){
+                AM_PM = "PM";
+            }
             if(hour > 12){
                 hour -= 12;
-                AM_PM = "PM";
             }
         //if diff is negative
         }else{
+            AM_PM = "AM";
             hour = utc_hour + (diff_in_hours);
             if(hour < 0){
                 hour += 12;
@@ -113,12 +116,15 @@ const timeInt = setInterval(() => {
                 utc_minutes -= 60;
                 hour += 1;
             }
+            if( hour >= 12){
+                AM_PM = "PM";
+            }
             if(hour > 12){
                 hour -= 12;
-                AM_PM = "PM";
             }
         //if diff is negative
         }else{
+            AM_PM = "AM";
             m_minute = (tz % 3600)/60;
             hour = utc_hour + (diff_in_hours);
             utc_minutes -= m_minute;
