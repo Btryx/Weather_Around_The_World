@@ -114,6 +114,10 @@ const timeInt = setInterval(() => {
         if(hour == 12){
             AM_PM = "PM";
         }
+
+        if(hour < 0){
+            hour += 12;
+        }
     }else{
         hour = utc_hour + (diff_in_hours); 
         if( tz > 0){
@@ -143,6 +147,9 @@ const timeInt = setInterval(() => {
             if(hour == 12){
                 AM_PM = "PM";
             }
+            if(hour < 0){
+                hour += 12;
+            }
 
         //if diff is negative
         }else{
@@ -171,6 +178,10 @@ const timeInt = setInterval(() => {
 
             if(hour == 12){
                 AM_PM = "PM";
+            }
+
+            if(hour < 0){
+                hour += 12;
             }
         }
     }
